@@ -11,21 +11,36 @@ You can init an `LBDelegateMatrioska` object with as many delegate objects you w
 LBDelegateMatrioska *matrioska = [[LBDelegateMatrioska alloc] initWithDelegates:@[mapClusterDelegate, self]];
 ```
 
-and the add this object as delegate
+and then add this object as delegate
 
 ```
 mapView.delegate = matrioska
+```
+
+It could be that a delegate object is available afterward the creation of the matrioska, in this case you might want to add it to the list of delegates managed by the matrioska.
+
+```
+[mapView.delegate addDelegate:newDelegate];
+```
+
+For this reason the final code should end up being:
+
+```
+if (!mapView.delegate) {
+    mapView.delegate = [[LBDelegateMatrioska alloc] initWithDelegates:@[delegate]];
+} else {
+    [mapView.delegate addDelegate:delegate];
+}
 ```
 
 In this way every time the MKMapView calls a delegate this call is forwarded to all the delegates respecting the array sorting (if you like the matrioska metaphor the `mapClusterDelegate` is the outer layer and is the first one called and then `self`)
 
 The proxy object keep a **weak** reference to all the delegate objects, therefore is your responsibility to keep the objects alive with a strong reference. Anyway, by using an `NSPointerArray` I'm sure that if a delegate gets deallocated the reference inside the array is nil-ed and therefor doesn't crash the app.
 
-There are just 2 basic rule and one limitation you have to keep in mind:
+There are just 2 basic rules you have to keep in mind:
 
 - The proxy will respond `YES` to the `respondToSelector:` message if and only if at least one of the provided delegate objects respond `YES` to the same method.
 - The previous rule apply the same for `conformsToProtocol:`
-- If the delegate method is non-`void` returning method only the first delegate (that is able to respond to that method) is called and its return value is returned.
 
 ## Why? / Use Case
 I start develop this class because I was tasked to implement annotation clustering in `MKMapView`.

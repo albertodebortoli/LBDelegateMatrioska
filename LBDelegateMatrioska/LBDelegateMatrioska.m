@@ -3,25 +3,18 @@
 //  LBDelegateMatrioska
 //
 //  Created by Luca Bernardi on 30/05/13.
+//  Modified by Alberto De Bortoli on 07/11/13.
+//
 //  Copyright (c) 2013 Luca Bernardi. All rights reserved.
 //
 
 #import "LBDelegateMatrioska.h"
 
-@implementation NSInvocation (ReturnType)
-
-- (BOOL)methodReturnTypeIsVoid
-{
-    return (([self.methodSignature methodReturnLength] == 0) ? YES : NO);
-}
-
-@end
-
-
 @interface LBDelegateMatrioska ()
-@property (nonatomic, strong) NSPointerArray *mutableDelegates;
-@end
 
+@property (nonatomic, strong) NSPointerArray *mutableDelegates;
+
+@end
 
 @implementation LBDelegateMatrioska
 
@@ -36,6 +29,13 @@
     return self;
 }
 
+- (void)addDelegate:(id)delegate
+{
+    NSPointerArray *copy = [self.mutableDelegates copy];
+    [copy addPointer:(void *)delegate];
+    self.mutableDelegates = copy;
+}
+
 - (NSArray *)delegates
 {
     return [self.mutableDelegates copy];
@@ -45,18 +45,10 @@
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
-    // If the invoked method return void I can safely call all the delegates
-    // otherwise I just invoke it on the first delegate that
-    // respond to the given selector
-    if ([invocation methodReturnTypeIsVoid]) {
-        for (id delegate in self.delegates) {
-            if ([delegate respondsToSelector:invocation.selector]) {
-                [invocation invokeWithTarget:delegate];
-            }
+    for (id delegate in self.delegates) {
+        if ([delegate respondsToSelector:invocation.selector]) {
+            [invocation invokeWithTarget:delegate];
         }
-    } else {
-        id firstResponder = [self _firstResponderToSelector:invocation.selector];
-        [invocation invokeWithTarget:firstResponder];
     }
 }
 
@@ -83,7 +75,7 @@
     return (firstConformed ? YES : NO);
 }
 
-#pragma mark -
+#pragma mark - Private Methods
 
 - (id)_firstResponderToSelector:(SEL)aSelector
 {

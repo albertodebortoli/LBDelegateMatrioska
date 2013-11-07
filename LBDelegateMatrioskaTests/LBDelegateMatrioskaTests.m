@@ -3,6 +3,8 @@
 //  LBDelegateMatrioskaTests
 //
 //  Created by Luca Bernardi on 30/05/13.
+//  Modified by Alberto De Bortoli on 07/11/13.
+//
 //  Copyright (c) 2013 Luca Bernardi. All rights reserved.
 //
 
@@ -10,7 +12,6 @@
 #import <Kiwi/NSProxy+KiwiVerifierAdditions.h>
 
 #import "LBDelegateMatrioska.h"
-
 
 @protocol CannedProtocol <NSObject>
 @optional
@@ -85,25 +86,6 @@ describe(@"The delegate matrioska", ^{
             [[thirdObject   should]     receive:testSelector];
             [(id <CannedProtocol>)matrioska performSelector:testSelector];
 #pragma clang diagnostic pop
-        });
-    });
-
-    context(@"when a method with a return type is called", ^{
-        SEL testSelector = @selector(didReturnValue);
-        
-        it(@"should be called only the first method", ^{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            [[firstObject   should]     receive:testSelector];
-            [[secondObject  shouldNot]  receive:testSelector];
-            [[thirdObject   shouldNot]  receive:testSelector];
-            [(id <CannedProtocol>)matrioska performSelector:testSelector];
-        });
-        it(@"should return the return value of the firs method", ^{
-            [firstObject stub:testSelector andReturn:theValue(42)];
-            [secondObject stub:testSelector andReturn:theValue(1)];
-            [[matrioska should] receive:@selector(didReturnValue) andReturn:theValue(42)];
-            [(id <CannedProtocol>)matrioska performSelector:testSelector];
         });
     });
     

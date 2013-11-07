@@ -56,6 +56,8 @@
 		9F738A051757722700C79FF3 /* LBDelegateMatrioskaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LBDelegateMatrioskaTests-Info.plist"; sourceTree = "<group>"; };
 		9F738A071757722700C79FF3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9F738A0A1757722700C79FF3 /* LBDelegateMatrioskaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBDelegateMatrioskaTests.m; sourceTree = "<group>"; };
+		D38E54CE182C43EF00366012 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		D38E54CF182C43F500366012 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,8 @@
 		9F7389E01757722600C79FF3 = {
 			isa = PBXGroup;
 			children = (
+				D38E54CF182C43F500366012 /* Podfile */,
+				D38E54CE182C43EF00366012 /* README.md */,
 				9F7389EE1757722700C79FF3 /* LBDelegateMatrioska */,
 				9F738A031757722700C79FF3 /* LBDelegateMatrioskaTests */,
 				9F7389EB1757722700C79FF3 /* Frameworks */,
